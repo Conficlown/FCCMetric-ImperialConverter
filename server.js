@@ -20,11 +20,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(helmet.noSniff());
-
+app.use(helmet.xssFilter());
 app.use(helmet.contentSecurityPolicy(
   {directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'trusted-cdn.com']
+      scriptSrc: ["'self'", "code.jquery.com"]
     }
   }));
 
