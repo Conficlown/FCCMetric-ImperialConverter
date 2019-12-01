@@ -23,15 +23,17 @@ function ConvertHandler() {
     }else if(!isNaN(Number(result))){
       return Number(result);
     }else{
-      try{
-        result = eval(result);
-        if(result===undefined){
-          return NaN;
+      //special treatment for fractional number
+      var countSlash = (result.match(/\//g) || []).length;
+      if(countSlash==1){
+        var split = result.split('/');
+        if( split[0] !== '' && !isNaN(Number(split[0])) &&  split[1] !== '' && !isNaN(Number(split[1])) ){
+          return eval(result);
         }else{
-          return result;
+          return NaN;
         }
-      }catch(e){
-        console.log(e);
+      }else{
+        return NaN;
       }
     }
   };
@@ -68,7 +70,22 @@ function ConvertHandler() {
 
   this.spellOutUnit = function(unit) {
     var result;
-    
+    switch(unit.toLowerCase()){
+      case 'l':
+        result = 'litres';break;
+      case 'gal':
+        result = 'gallons';break;
+      case 'lbs':
+        result = 'pounds';break;
+      case 'kg':
+        result = 'kilos';break;
+      case 'mi':
+        result = 'miles';break;
+      case 'km':
+        result = 'kilometers';break;
+      default:
+        result = '';
+    }
     return result;
   };
   
@@ -101,18 +118,7 @@ function ConvertHandler() {
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    var result = `${initNum} ${initUnit} converts to ${returnNum.toFixed(5)} ${returnUnit}`;
-    // if(initUnit == ''){
-    //   if(isNaN(initNum)){
-    //     return 'invalid number and unit';
-    //   }else{
-    //     return 'invalid unit';
-    //   }
-    // }else{
-    //   if(isNaN(initNum)){
-    //     return 'invalid number';
-    //   }
-    // }
+    var result = `${initNum} ${initUnit} converts to ${returnNum.toFixed(5)} ${this.spellOutUnit(returnUnit)}`;
     return result;
   };
   
