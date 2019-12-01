@@ -24,7 +24,7 @@ app.use(helmet.xssFilter());
 app.use(helmet.contentSecurityPolicy(
   {directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"]
+      scriptSrc: ["'self'", "code.jquery.com"]
     }
   }));
 
